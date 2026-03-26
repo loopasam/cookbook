@@ -141,7 +141,14 @@ The build script **will fail with an error** if a recipe uses a category not in 
 - Dotted border between cards as cut guides
 - Font size: ~8pt body, ~10pt title
 - `break-inside: avoid` on cards to prevent splitting across pages
-- Overflow: clipped with a visual indicator, or auto-expand (see open questions)
+- **Adaptive card sizing**: recipes are measured after rendering to determine how much space they need. A4 portrait with 8mm margins gives 281mm usable height → each grid row is ~140mm tall.
+  - **Quarter** (default): fits in one grid cell (97mm wide × 140mm tall)
+  - **Half**: too tall at quarter-width, but fits in one row at full width (194mm wide × 140mm tall)
+  - **Full**: too tall even at full width — takes an entire page (194mm wide × 281mm tall)
+- The build script uses Puppeteer to measure each card's rendered height in two passes:
+  1. Measure all cards at **quarter-width** (97mm). Cards that fit in ≤140mm are `quarter`.
+  2. Re-measure remaining cards at **half-width** (194mm) — content reflows into the wider space. Cards that now fit in ≤140mm are `half`. The rest are `full`.
+- Cards are packed into pages greedily: each page has 4 slots (2×2); a half card uses 2 slots, a full card uses 4 slots. No card is ever clipped.
 
 ### Dependencies
 
@@ -159,7 +166,7 @@ npm run build -- --filter curry    # (future) Filter by filename/title
 
 ## Design Decisions
 
-- **Long recipes**: Most recipes will be short and fit in ¼ page. If a recipe overflows, it auto-expands to ½ or full page — no clipping.
+- **Long recipes**: Most recipes will be short and fit in ¼ page. Longer recipes (e.g., those with a Prep section) auto-expand to ½ page (full row) or full page. The build script measures each card's rendered height via Puppeteer in two passes — first at quarter-width (97mm), then at half-width (194mm) for cards that overflow — and assigns a size class (`quarter` / `half` / `full`). Cards are then bin-packed into pages so no space is wasted and nothing is clipped.
 - **Ordering**: Recipes are grouped by `category` in a fixed logical order (basics → starters → salads → mains → sides → desserts → drinks). Within a category, recipes are sorted alphabetically by filename. Deterministic order so reprints are consistent.
 - **Page orientation**: Portrait A4.
 - **No index/TOC**: The PDF starts directly with recipe cards.

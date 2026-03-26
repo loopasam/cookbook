@@ -1,14 +1,18 @@
-import { test, expect } from 'vitest';
+import { test, expect, beforeEach, afterEach } from 'vitest';
 import fs from 'fs';
 import path from 'path';
 import { loadRecipes } from '../scripts/build-pdf.js';
 
 const RECIPES_DIR = path.join(process.cwd(), 'recipes');
-const TEMP_FILE = path.join(RECIPES_DIR, '_test-invalid-category.md');
+const TEMP_FILE = path.join(RECIPES_DIR, '_test-validation-temp.md');
 
-function cleanup() {
+beforeEach(() => {
   if (fs.existsSync(TEMP_FILE)) fs.unlinkSync(TEMP_FILE);
-}
+});
+
+afterEach(() => {
+  if (fs.existsSync(TEMP_FILE)) fs.unlinkSync(TEMP_FILE);
+});
 
 test('loadRecipes throws on invalid category with helpful message', () => {
   fs.writeFileSync(TEMP_FILE, `---
@@ -24,12 +28,8 @@ servings: 2
 1. Cook the eggs 🥚
 `);
 
-  try {
-    expect(() => loadRecipes()).toThrow('brunch');
-    expect(() => loadRecipes()).toThrow('basics');  // should list valid options
-  } finally {
-    cleanup();
-  }
+  expect(() => loadRecipes()).toThrow('brunch');
+  expect(() => loadRecipes()).toThrow('basics');  // should list valid options
 });
 
 test('loadRecipes throws on missing category', () => {
@@ -45,9 +45,5 @@ servings: 2
 1. Cook the eggs 🥚
 `);
 
-  try {
-    expect(() => loadRecipes()).toThrow('category');
-  } finally {
-    cleanup();
-  }
+  expect(() => loadRecipes()).toThrow('category');
 });
