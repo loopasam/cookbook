@@ -150,8 +150,15 @@ export function packPages(cards) {
   for (const card of cards) {
     const needed = sizeSlots[card.size];
 
-    if (usedSlots + needed > SLOTS_PER_PAGE) {
-      // Current page can't fit this card — start a new page
+    // Half cards must start at a row boundary (0 or 2 slots used)
+    // If we have 1 or 3 slots used, a half card won't align — start new page
+    if (needed === 2 && usedSlots % 2 !== 0) {
+      if (currentPage.length > 0) {
+        pages.push(currentPage);
+      }
+      currentPage = [card];
+      usedSlots = needed;
+    } else if (usedSlots + needed > SLOTS_PER_PAGE) {
       if (currentPage.length > 0) {
         pages.push(currentPage);
       }

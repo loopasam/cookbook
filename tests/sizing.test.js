@@ -66,3 +66,19 @@ test('packPages fills pages respecting card sizes', () => {
   const fullPage = pages.find(p => p.some(c => c.size === 'full'));
   expect(fullPage.length).toBe(1);
 });
+
+test('packPages ensures half cards start at row boundary', () => {
+  const cards = [
+    { size: 'quarter', cardHtml: '<div class="card">Q1</div>' },
+    { size: 'half', cardHtml: '<div class="card half">H1</div>' },
+    { size: 'quarter', cardHtml: '<div class="card">Q2</div>' },
+  ];
+
+  const pages = packPages(cards);
+
+  // Q1 alone on page 1 (half can't start after 1 slot)
+  // H1 + Q2 can't share a row, so: H1 on row 1 of page 2, Q2 on row 2
+  expect(pages.length).toBe(2);
+  expect(pages[0].length).toBe(1); // just Q1
+  expect(pages[1][0].size).toBe('half'); // H1 starts at row boundary
+});
