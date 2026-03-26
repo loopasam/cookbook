@@ -14,3 +14,5 @@
 - [x] **Add npm script**: `npm run build` wired to the build script
 - [x] **Test & tune**: Print a test PDF, verify layout, adjust font sizes / spacing / card fit
 - [x] **Category support**: Add `category` to existing recipes, update build script to group by category (alphabetical), update tests
+- [x] **Fixed category order**: Update build script to sort by fixed category order (basics → starters → salads → mains → sides → desserts → drinks) instead of alphabetical
+- [x] **Category validation**: Build fails with a clear error if a recipe uses an invalid category

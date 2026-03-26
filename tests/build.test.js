@@ -1,16 +1,18 @@
 import { test, expect } from 'vitest';
 import { loadRecipes, renderCard, buildHTML } from '../scripts/build-pdf.js';
 
-test('loadRecipes returns recipes grouped by category (alphabetical), then by filename within category', () => {
+test('loadRecipes returns recipes in fixed category order, then alphabetical within category', () => {
+  const CATEGORY_ORDER = ['basics', 'starters', 'salads', 'mains', 'sides', 'desserts', 'drinks'];
   const recipes = loadRecipes();
   expect(recipes.length).toBeGreaterThanOrEqual(4);
 
-  // Categories should be in alphabetical order
+  // Categories should follow the fixed order
   const categories = recipes.map(r => r.category);
   for (let i = 1; i < categories.length; i++) {
     if (categories[i] !== categories[i - 1]) {
-      expect(categories[i] >= categories[i - 1], 
-        `category "${categories[i]}" should come after "${categories[i - 1]}"`).toBe(true);
+      const prevIdx = CATEGORY_ORDER.indexOf(categories[i - 1]);
+      const currIdx = CATEGORY_ORDER.indexOf(categories[i]);
+      expect(currIdx, `"${categories[i]}" should come after "${categories[i - 1]}" in fixed order`).toBeGreaterThan(prevIdx);
     }
   }
 

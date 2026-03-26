@@ -5,6 +5,8 @@ import MarkdownIt from 'markdown-it';
 
 const md = new MarkdownIt();
 
+const CATEGORY_ORDER = ['basics', 'starters', 'salads', 'mains', 'sides', 'desserts', 'drinks'];
+
 const ROOT = path.resolve(import.meta.dirname, '..');
 const RECIPES_DIR = path.join(ROOT, 'recipes');
 const TEMPLATE_PATH = path.join(ROOT, 'templates', 'layout.html');
@@ -19,6 +21,20 @@ export function loadRecipes() {
   const recipes = files.map(filename => {
     const raw = fs.readFileSync(path.join(RECIPES_DIR, filename), 'utf-8');
     const { data, content } = matter(raw);
+
+    if (!data.category) {
+      throw new Error(
+        `Recipe "${filename}" is missing a "category" field in its frontmatter.\n` +
+        `Valid categories: ${CATEGORY_ORDER.join(', ')}`
+      );
+    }
+    if (!CATEGORY_ORDER.includes(data.category)) {
+      throw new Error(
+        `Recipe "${filename}" has invalid category "${data.category}".\n` +
+        `Valid categories: ${CATEGORY_ORDER.join(', ')}`
+      );
+    }
+
     const bodyHtml = md.render(content);
     return {
       filename,
@@ -29,9 +45,11 @@ export function loadRecipes() {
     };
   });
 
-  // Sort by category (alphabetical), then by filename within category
+  // Sort by fixed category order, then by filename within category
   recipes.sort((a, b) => {
-    if (a.category !== b.category) return a.category.localeCompare(b.category);
+    const catA = CATEGORY_ORDER.indexOf(a.category);
+    const catB = CATEGORY_ORDER.indexOf(b.category);
+    if (catA !== catB) return catA - catB;
     return a.filename.localeCompare(b.filename);
   });
 

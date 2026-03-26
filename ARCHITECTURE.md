@@ -101,6 +101,24 @@ The emoji acts as a **visual marker** next to the ingredient name — both in th
 - Sections: `## Prep: <name>` (optional), `## Ingredients`, `## Steps`, `## Notes` (optional)
 - Frontmatter fields: `title` (required), `category` (required), `servings` (required)
 
+### Categories
+
+The `category` field must be one of the following fixed values, listed here in their rendering order in the PDF:
+
+| Order | Category | What belongs here |
+|-------|----------|-------------------|
+| 1 | `basics` | Sauces, dressings, stocks, foundational recipes |
+| 2 | `starters` | Soups, appetizers, small bites |
+| 3 | `salads` | Cold and warm salads |
+| 4 | `mains` | Main dishes (pasta, curry, stew, fish, meat...) |
+| 5 | `sides` | Vegetables, grains, accompaniments, breads |
+| 6 | `desserts` | Sweet things |
+| 7 | `drinks` | Cocktails, smoothies, etc. |
+
+This order mirrors a natural meal progression: foundational recipes first (things other recipes may reference), then starters → mains → sides → desserts → drinks.
+
+The build script **will fail with an error** if a recipe uses a category not in this list, and will print the valid options.
+
 ## Printing Pipeline: Markdown → HTML → CSS Print Layout → PDF
 
 ### Approach
@@ -142,7 +160,7 @@ npm run build -- --filter curry    # (future) Filter by filename/title
 ## Design Decisions
 
 - **Long recipes**: Most recipes will be short and fit in ¼ page. If a recipe overflows, it auto-expands to ½ or full page — no clipping.
-- **Ordering**: Recipes are grouped by `category` (from frontmatter), categories sorted alphabetically. Within a category, recipes are sorted alphabetically by filename. Deterministic order so reprints are consistent.
+- **Ordering**: Recipes are grouped by `category` in a fixed logical order (basics → starters → salads → mains → sides → desserts → drinks). Within a category, recipes are sorted alphabetically by filename. Deterministic order so reprints are consistent.
 - **Page orientation**: Portrait A4.
 - **No index/TOC**: The PDF starts directly with recipe cards.
 - **Color scheme**: Black & white text for cheap printing. Emojis retain their native color.

@@ -71,7 +71,14 @@ If the same prep is used in multiple recipes, duplicate it in each file — ever
 
 ### Rules
 - **Frontmatter**: `title` (required), `category` (required), `servings` (required). No other fields.
-- **Category**: a short lowercase label (e.g., `mains`, `salads`, `sauces`, `desserts`, `sides`, `snacks`). Recipes are grouped by category in the PDF, categories sorted alphabetically. When adding a new recipe, check existing recipes in `recipes/` and reuse an existing category whenever possible — only create a new category if the recipe truly doesn't fit any existing one.
+- **Category**: must be one of the following fixed values: `basics`, `starters`, `salads`, `mains`, `sides`, `desserts`, `drinks`. No other values are allowed — the build will fail. Pick the most appropriate one:
+  - `basics` — sauces, dressings, stocks, foundational recipes
+  - `starters` — soups, appetizers, small bites
+  - `salads` — cold and warm salads
+  - `mains` — main dishes (pasta, curry, stew, fish, meat...)
+  - `sides` — vegetables, grains, accompaniments, breads
+  - `desserts` — sweet things
+  - `drinks` — cocktails, smoothies, etc.
 - **Emoji markers**: every ingredient gets a unique emoji at the start of its line. Reuse that same emoji next to the ingredient name in the Steps section. Always write the full ingredient name — the emoji is a visual aid, not a replacement.
 - **Sections**: `## Prep: <name>` (optional), `## Ingredients` and `## Steps` are required, `## Notes` is optional.
 - **Keep it concise**: recipes are printed 4-per-A4-page, so brevity matters. Aim for 5–8 ingredients and 4–6 steps.
