@@ -25,7 +25,7 @@ test('template has a {{CARDS}} placeholder for recipe injection', () => {
   expect(content).toContain('{{CARDS}}');
 });
 
-test('template has dotted border for cut guides', () => {
+test('template has solid grey border for card boxes', () => {
   const content = fs.readFileSync(templatePath, 'utf-8');
-  expect(content).toContain('dotted');
+  expect(content).toContain('solid');
 });
