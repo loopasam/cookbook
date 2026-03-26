@@ -1,0 +1,30 @@
+{
+  "name": "cookbook",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "vitest run",
+    "build": "node scripts/build-pdf.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/loopasam/cookbook.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/loopasam/cookbook/issues"
+  },
+  "homepage": "https://github.com/loopasam/cookbook#readme",
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "markdown-it": "^14.1.1",
+    "puppeteer": "^24.40.0"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.1"
+  }
+}
