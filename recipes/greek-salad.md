@@ -1,5 +1,6 @@
 ---
 title: Greek Salad
+category: salads
 servings: 2
 ---
 

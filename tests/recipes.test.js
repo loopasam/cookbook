@@ -21,13 +21,16 @@ test('all recipe filenames are lowercase kebab-case', () => {
   }
 });
 
-test('all recipes have valid frontmatter with title and servings', () => {
+test('all recipes have valid frontmatter with title, category, and servings', () => {
   const files = getRecipeFiles();
   for (const file of files) {
     const content = fs.readFileSync(path.join(recipesDir, file), 'utf-8');
     const { data } = matter(content);
     expect(data.title, `${file} missing title`).toBeDefined();
     expect(typeof data.title).toBe('string');
+    expect(data.category, `${file} missing category`).toBeDefined();
+    expect(typeof data.category).toBe('string');
+    expect(data.category, `${file} category should be lowercase`).toMatch(/^[a-z]+$/);
     expect(data.servings, `${file} missing servings`).toBeDefined();
   }
 });

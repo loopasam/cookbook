@@ -1,5 +1,6 @@
 ---
 title: French Omelette
+category: mains
 servings: 1
 ---
 

@@ -1,19 +1,37 @@
 import { test, expect } from 'vitest';
 import { loadRecipes, renderCard, buildHTML } from '../scripts/build-pdf.js';
 
-test('loadRecipes returns recipes sorted alphabetically by filename', () => {
+test('loadRecipes returns recipes grouped by category (alphabetical), then by filename within category', () => {
   const recipes = loadRecipes();
   expect(recipes.length).toBeGreaterThanOrEqual(4);
-  const filenames = recipes.map(r => r.filename);
-  const sorted = [...filenames].sort();
-  expect(filenames).toEqual(sorted);
+
+  // Categories should be in alphabetical order
+  const categories = recipes.map(r => r.category);
+  for (let i = 1; i < categories.length; i++) {
+    if (categories[i] !== categories[i - 1]) {
+      expect(categories[i] >= categories[i - 1], 
+        `category "${categories[i]}" should come after "${categories[i - 1]}"`).toBe(true);
+    }
+  }
+
+  // Within each category, filenames should be alphabetical
+  const byCategory = {};
+  for (const r of recipes) {
+    if (!byCategory[r.category]) byCategory[r.category] = [];
+    byCategory[r.category].push(r.filename);
+  }
+  for (const [cat, filenames] of Object.entries(byCategory)) {
+    const sorted = [...filenames].sort();
+    expect(filenames, `recipes in "${cat}" not sorted`).toEqual(sorted);
+  }
 });
 
-test('loadRecipes parses frontmatter correctly', () => {
+test('loadRecipes parses frontmatter correctly including category', () => {
   const recipes = loadRecipes();
   const carbonara = recipes.find(r => r.filename === 'pasta-carbonara.md');
   expect(carbonara).toBeDefined();
   expect(carbonara.title).toBe('Pasta Carbonara');
+  expect(carbonara.category).toBe('mains');
   expect(carbonara.servings).toBe(4);
   expect(carbonara.bodyHtml).toContain('spaghetti');
 });

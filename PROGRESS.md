@@ -13,3 +13,4 @@
 - [x] **PDF generation**: Use Puppeteer to render the HTML and print to `output/cookbook.pdf`
 - [x] **Add npm script**: `npm run build` wired to the build script
 - [x] **Test & tune**: Print a test PDF, verify layout, adjust font sizes / spacing / card fit
+- [x] **Category support**: Add `category` to existing recipes, update build script to group by category (alphabetical), update tests

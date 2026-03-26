@@ -1,5 +1,6 @@
 ---
 title: Banana Bread
+category: desserts
 servings: 8
 ---
 

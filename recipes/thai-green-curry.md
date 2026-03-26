@@ -1,5 +1,6 @@
 ---
 title: Thai Green Curry
+category: mains
 servings: 4
 ---
 

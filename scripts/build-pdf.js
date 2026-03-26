@@ -16,17 +16,26 @@ export function loadRecipes() {
     .filter(f => f.endsWith('.md'))
     .sort();
 
-  return files.map(filename => {
+  const recipes = files.map(filename => {
     const raw = fs.readFileSync(path.join(RECIPES_DIR, filename), 'utf-8');
     const { data, content } = matter(raw);
     const bodyHtml = md.render(content);
     return {
       filename,
       title: data.title,
+      category: data.category,
       servings: data.servings,
       bodyHtml,
     };
   });
+
+  // Sort by category (alphabetical), then by filename within category
+  recipes.sort((a, b) => {
+    if (a.category !== b.category) return a.category.localeCompare(b.category);
+    return a.filename.localeCompare(b.filename);
+  });
+
+  return recipes;
 }
 
 export function renderCard(recipe) {

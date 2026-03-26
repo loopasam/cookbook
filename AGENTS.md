@@ -22,10 +22,11 @@ When the user asks to add a recipe, create a Markdown file in `recipes/` followi
 ### File naming
 - Lowercase, kebab-case: `thai-green-curry.md`, `banana-bread.md`
 
-### Structure
+### Simple recipe
 ```markdown
 ---
 title: Recipe Name
+category: mains
 servings: 4
 ---
 
@@ -42,10 +43,37 @@ servings: 4
 - Optional tips or variations
 ```
 
+### Recipe with inline prep
+When a recipe requires a sub-component prepared from scratch (e.g., mayo, roasted pumpkin), add a `## Prep: <name>` section before `## Ingredients`. List the prep ingredients and steps inline. Reference the prep result in the main ingredients with a note like "(from prep above)".
+
+```markdown
+---
+title: Caesar Salad
+category: salads
+servings: 2
+---
+
+## Prep: Mayo
+- 🥚 1 egg yolk
+- 🫗 200ml sunflower oil
+- 🍋 1 tsp lemon juice
+
+1. Whisk the egg yolk 🥚 with lemon juice 🍋
+2. Slowly drizzle in the oil 🫗 while whisking until emulsified
+
+## Ingredients
+- 🥬 1 romaine lettuce
+- 🫙 3 tbsp mayo (from prep above)
+...
+```
+
+If the same prep is used in multiple recipes, duplicate it in each file — every recipe must be self-contained.
+
 ### Rules
-- **Frontmatter**: only `title` (required) and `servings` (required). No tags, prep, or cook fields.
+- **Frontmatter**: `title` (required), `category` (required), `servings` (required). No other fields.
+- **Category**: a short lowercase label (e.g., `mains`, `salads`, `sauces`, `desserts`, `sides`, `snacks`). Recipes are grouped by category in the PDF, categories sorted alphabetically. When adding a new recipe, check existing recipes in `recipes/` and reuse an existing category whenever possible — only create a new category if the recipe truly doesn't fit any existing one.
 - **Emoji markers**: every ingredient gets a unique emoji at the start of its line. Reuse that same emoji next to the ingredient name in the Steps section. Always write the full ingredient name — the emoji is a visual aid, not a replacement.
-- **Sections**: `## Ingredients` and `## Steps` are required. `## Notes` is optional.
+- **Sections**: `## Prep: <name>` (optional), `## Ingredients` and `## Steps` are required, `## Notes` is optional.
 - **Keep it concise**: recipes are printed 4-per-A4-page, so brevity matters. Aim for 5–8 ingredients and 4–6 steps.
 - After adding recipes, run `npm run build` to regenerate the PDF.
 

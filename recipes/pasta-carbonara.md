@@ -1,5 +1,6 @@
 ---
 title: Pasta Carbonara
+category: mains
 servings: 4
 ---
 
