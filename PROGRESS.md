@@ -18,4 +18,5 @@
 - [x] **Category validation**: Build fails with a clear error if a recipe uses an invalid category
 - [x] **Adaptive card sizing**: Use Puppeteer to measure each card's rendered height and assign a size class (`quarter` ≤ ¼ A4, `half` ≤ ½ A4, `full` = entire page)
 - [x] **Page bin-packing**: Pack cards into pages greedily (each page = 4 slots; half = 2 slots, full = 4 slots) so no card is clipped and minimal space is wasted
-- [x] **Fix card measurement**: Two-pass measurement — first at quarter-width (97mm), then re-measure overflows at half-width (194mm). Row height is ~140mm (281mm / 2), not 281mm. Cards that don't fit at half-width become full-page.
+- [x] **Fix card measurement**
+- [x] ~~**Category divider pages**~~: Reverted — not useful in practice: Two-pass measurement — first at quarter-width (97mm), then re-measure overflows at half-width (194mm). Row height is ~140mm (281mm / 2), not 281mm. Cards that don't fit at half-width become full-page.
