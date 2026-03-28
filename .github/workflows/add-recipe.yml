@@ -1,0 +1,94 @@
+name: Add Recipe from Issue
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  add-recipe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Install pi coding agent
+        run: npm install -g @mariozechner/pi-coding-agent
+
+      - name: Run pi agent to process recipe
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          pi --provider anthropic --model claude-opus-4-6 --no-session --print \
+            "You are a recipe assistant for this cookbook project.
+
+          Read the AGENTS.md file for the recipe format conventions.
+
+          A user submitted a GitHub Issue with the following content:
+
+          **Title:** $ISSUE_TITLE
+
+          **Body:**
+          $ISSUE_BODY
+
+          Your task:
+          1. Determine if this is a recipe submission. If it is NOT a recipe (e.g. a bug report, question, or unrelated content), create a file called /tmp/not-a-recipe containing the text of a polite comment explaining this doesn't appear to be a recipe. Then stop.
+          2. If it IS a recipe, follow the AGENTS.md conventions exactly to create a new markdown file in recipes/. Pick the right category, add emoji markers, keep it concise.
+          3. After creating the recipe file, run: npm run build
+          4. Verify the build succeeded."
+
+      - name: Check if recipe was created
+        id: check
+        run: |
+          if [ -f /tmp/not-a-recipe ]; then
+            echo "is_recipe=false" >> "$GITHUB_OUTPUT"
+          elif git diff --name-only | grep -q "^recipes/"; then
+            echo "is_recipe=true" >> "$GITHUB_OUTPUT"
+            echo "recipe_file=$(git diff --name-only | grep '^recipes/' | head -1)" >> "$GITHUB_OUTPUT"
+          else
+            echo "is_recipe=false" >> "$GITHUB_OUTPUT"
+            echo "No recipe file created and no not-a-recipe marker" > /tmp/not-a-recipe
+          fi
+
+      - name: Commit and push recipe
+        if: steps.check.outputs.is_recipe == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Add recipe from issue #${{ github.event.issue.number }}: ${{ github.event.issue.title }}"
+          git push
+
+      - name: Close issue with success comment
+        if: steps.check.outputs.is_recipe == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          SLUG=$(basename "${{ steps.check.outputs.recipe_file }}" .md)
+          gh issue comment ${{ github.event.issue.number }} \
+            --body "✅ Recipe added! It will be live shortly at https://loopasam.github.io/cookbook/${SLUG}.html"
+          gh issue close ${{ github.event.issue.number }}
+
+      - name: Comment on non-recipe issue
+        if: steps.check.outputs.is_recipe == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ -f /tmp/not-a-recipe ]; then
+            COMMENT=$(cat /tmp/not-a-recipe)
+          else
+            COMMENT="This doesn't appear to be a recipe submission. If it is, please reopen with the recipe details in the issue body."
+          fi
+          gh issue comment ${{ github.event.issue.number }} --body "$COMMENT"

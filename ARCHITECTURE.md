@@ -230,6 +230,43 @@ This means contributors just push recipe markdown — the site and PDF update au
 - No RSS, no API, no JSON feed
 - No separate static site generator — the existing build script does everything
 
+## Recipe Submission via GitHub Issues
+
+### Overview
+
+Anyone can submit a recipe by opening a GitHub Issue on the repo. A Pi coding agent automatically processes the issue, converts it into a properly formatted recipe markdown file, commits it to `main`, and closes the issue.
+
+### Flow
+
+```
+User opens Issue  →  Action triggers  →  Pi agent reads issue body
+(paste recipe)       (on: issues opened)   ↓
+                                          Creates recipes/<slug>.md (following AGENTS.md conventions)
+                                          Runs npm run build
+                                          Commits & pushes to main
+                                          Closes issue with comment
+                                            ↓
+                                          Deploy action triggers (on push to main)
+                                          Site + PDF updated
+```
+
+### GitHub Action (`.github/workflows/add-recipe.yml`)
+
+- **Trigger**: `on: issues: types: [opened]` — no label filter, fires on every new issue
+- **Model**: Anthropic `claude-opus-4-6` via `ANTHROPIC_API_KEY` repo secret
+- **Agent prompt**: Inline in the workflow. Instructs pi to:
+  1. Read the issue title and body
+  2. Determine if it's a recipe — if not, comment on the issue explaining why and stop
+  3. If it is a recipe, create the markdown file in `recipes/` following AGENTS.md format rules
+  4. Run `npm run build` to regenerate the PDF and site
+  5. Commit and push to `main`
+- **After agent completes**: A final step closes the issue with a comment linking to the new recipe on the site
+- **Non-recipe issues**: The agent comments that the issue doesn't look like a recipe and does NOT close the issue (leave it for a human)
+
+### Secrets Required
+
+- `ANTHROPIC_API_KEY` — for the Pi coding agent to call Claude
+
 ## Design Decisions
 
 - **Long recipes**: Most recipes will be short and fit in ¼ page. Longer recipes (e.g., those with a Prep section) auto-expand to ½ page (full row) or full page. The build script measures each card's rendered height via Puppeteer in two passes — first at quarter-width (97mm), then at half-width (194mm) for cards that overflow — and assigns a size class (`quarter` / `half` / `full`). Cards are then bin-packed into pages so no space is wasted and nothing is clipped.

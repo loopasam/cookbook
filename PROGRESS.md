@@ -16,3 +16,7 @@
 - [x] **CSS**: Create `docs/style.css` — minimal, classless, web-only (max-width 640px, system fonts, semantic element styling, emoji-friendly ingredient lists)
 - [x] **PDF link**: Include `cookbook.pdf` in `docs/` and link to it from the index page
 - [x] **GitHub Action**: Add `.github/workflows/deploy.yml` — on push to `main`: checkout → install → `npm run build` → deploy `docs/` to GitHub Pages
+
+## Recipe Submission via GitHub Issues
+
+- [x] **Add recipe action**: Create `.github/workflows/add-recipe.yml` — on issue opened, run Pi agent to parse the issue, create recipe .md, build, commit, and close issue
