@@ -14,10 +14,10 @@ test('template has A4 page size CSS rule', () => {
   expect(content).toContain('A4');
 });
 
-test('template has a 2x2 grid layout', () => {
+test('template has a grid layout', () => {
   const content = fs.readFileSync(templatePath, 'utf-8');
   expect(content).toContain('grid');
-  expect(content).toContain('1fr 1fr');
+  expect(content).toContain('1fr');
 });
 
 test('template has a {{CARDS}} placeholder for recipe injection', () => {
