@@ -1,22 +1,18 @@
 # Progress
 
-## Tasks
+## PDF Pipeline (done)
 
-- [x] **Project setup**: Initialize `package.json`, install dependencies (`markdown-it`, `gray-matter`, `puppeteer`)
-- [x] **Sample recipes**: Create 4–5 example recipes in `recipes/` following the format conventions (frontmatter, emoji ingredients, steps with emoji references)
-- [x] **HTML template**: Create `templates/layout.html` with CSS print styles — A4 portrait, 2×2 grid, dotted cut lines, black & white with color emojis
-- [x] **Build script**: Create `scripts/build-pdf.js` that:
-  - Reads all `recipes/*.md` sorted alphabetically
-  - Parses frontmatter + Markdown → HTML
-  - Injects recipe cards into the HTML template
-  - Handles long recipes (auto-expand to ½ or full page)
-- [x] **PDF generation**: Use Puppeteer to render the HTML and print to `output/cookbook.pdf`
-- [x] **Add npm script**: `npm run build` wired to the build script
-- [x] **Test & tune**: Print a test PDF, verify layout, adjust font sizes / spacing / card fit
-- [x] **Category support**: Add `category` to existing recipes, update build script to group by category (alphabetical), update tests
-- [x] **Fixed category order**: Update build script to sort by fixed category order (basics → starters → salads → mains → sides → desserts → drinks) instead of alphabetical
-- [x] **Category validation**: Build fails with a clear error if a recipe uses an invalid category
-- [x] **Adaptive card sizing**: Use Puppeteer to measure each card's rendered height and assign a size class (`quarter` ≤ ¼ A4, `half` ≤ ½ A4, `full` = entire page)
-- [x] **Page bin-packing**: Pack cards into pages greedily (each page = 4 slots; half = 2 slots, full = 4 slots) so no card is clipped and minimal space is wasted
-- [x] **Fix card measurement**
-- [x] ~~**Category divider pages**~~: Reverted — not useful in practice: Two-pass measurement — first at quarter-width (97mm), then re-measure overflows at half-width (194mm). Row height is ~140mm (281mm / 2), not 281mm. Cards that don't fit at half-width become full-page.
+- [x] Project setup, dependencies, sample recipes
+- [x] HTML template with CSS print styles (A4, 2×2 grid, dotted cut lines)
+- [x] Build script: parse recipes → HTML → PDF via Puppeteer
+- [x] Category support with fixed order and validation
+- [x] Adaptive card sizing (quarter/half/full) with two-pass measurement
+- [x] Page bin-packing (greedy slot filling)
+
+## GitHub Pages Site
+
+- [x] **HTML generation**: Extend build script to output `docs/` with one HTML page per recipe, using a minimal page template that links to `style.css`
+- [x] **Index page**: Generate `docs/index.html` listing all recipes grouped by category (same fixed order as PDF), each title linking to its recipe page
+- [x] **CSS**: Create `docs/style.css` — minimal, classless, web-only (max-width 640px, system fonts, semantic element styling, emoji-friendly ingredient lists)
+- [x] **PDF link**: Include `cookbook.pdf` in `docs/` and link to it from the index page
+- [x] **GitHub Action**: Add `.github/workflows/deploy.yml` — on push to `main`: checkout → install → `npm run build` → deploy `docs/` to GitHub Pages

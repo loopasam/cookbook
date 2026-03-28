@@ -164,6 +164,72 @@ npm run build                     # Generates output/cookbook.pdf
 npm run build -- --filter curry    # (future) Filter by filename/title
 ```
 
+## GitHub Pages Site
+
+### Overview
+
+In addition to the PDF, the build generates a static HTML site published to GitHub Pages. Each recipe becomes its own page, plus an index page listing all recipes grouped by category.
+
+### Output Structure
+
+```
+docs/
+├── index.html              # Recipe listing grouped by category
+├── pesto-beans.html        # One page per recipe (filename matches recipe slug)
+├── pasta-carbonara.html
+├── ...
+├── style.css               # Single shared stylesheet
+└── cookbook.pdf             # Link from the site for the printable version
+```
+
+### HTML Generation
+
+The existing build script is extended with a second output target. For each recipe it already parses (frontmatter + markdown → HTML), it also:
+
+1. Wraps the recipe HTML in a minimal page template that links to `style.css`
+2. Writes it to `docs/<slug>.html`
+
+The index page groups recipes by category (same fixed order as the PDF: basics → starters → salads → mains → sides → desserts → drinks), with each title linking to its recipe page.
+
+### CSS (`docs/style.css`)
+
+A single, minimal CSS file — no framework, no build step. Goals:
+
+- **Readable on any device** — fluid layout, sensible max-width (~640px centered), system font stack
+- **Respects the recipe structure** — clear visual hierarchy for title, servings, ingredients, steps, notes
+- **Lightweight** — under 2KB, no classes needed on recipe content (style via semantic elements: `h1`, `h2`, `ul`, `ol`, `p`, etc.)
+- **Web only** — no print styles needed; the PDF covers the printable use case
+
+Rough plan:
+
+```
+body          → max-width: 640px, margin: auto, system fonts, comfortable line-height
+h1            → recipe title
+h2            → section headers (Ingredients, Steps, etc.)
+ul            → ingredient lists (no bullet, since emoji serves as marker)
+ol            → steps
+.recipe-meta  → servings line, subtle/smaller text
+a             → simple link color, no underline clutter on index page
+```
+
+### GitHub Action
+
+A GitHub Action runs on every push to `main`:
+
+1. Checks out the repo
+2. Installs Node dependencies
+3. Runs `npm run build` (generates both PDF and HTML site into `docs/`)
+4. Deploys `docs/` to GitHub Pages (using `actions/deploy-pages` or simply committing to a `gh-pages` branch)
+
+This means contributors just push recipe markdown — the site and PDF update automatically.
+
+### What this does NOT include (intentionally)
+
+- No client-side JavaScript (pure static HTML + CSS)
+- No search/filter (keep it simple; the index page is scannable)
+- No RSS, no API, no JSON feed
+- No separate static site generator — the existing build script does everything
+
 ## Design Decisions
 
 - **Long recipes**: Most recipes will be short and fit in ¼ page. Longer recipes (e.g., those with a Prep section) auto-expand to ½ page (full row) or full page. The build script measures each card's rendered height via Puppeteer in two passes — first at quarter-width (97mm), then at half-width (194mm) for cards that overflow — and assigns a size class (`quarter` / `half` / `full`). Cards are then bin-packed into pages so no space is wasted and nothing is clipped.
