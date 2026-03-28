@@ -103,7 +103,7 @@ async function measureAtWidth(page, cards, width) {
 
 export async function measureCards(cards) {
   const puppeteer = await import('puppeteer');
-  const browser = await puppeteer.default.launch();
+  const browser = await puppeteer.default.launch({ args: ['--no-sandbox'] });
   const page = await browser.newPage();
 
   // Pass 1: measure all cards at quarter-width
@@ -215,7 +215,7 @@ export async function buildPDF() {
     fs.mkdirSync(OUTPUT_DIR, { recursive: true });
   }
 
-  const browser = await puppeteer.default.launch();
+  const browser = await puppeteer.default.launch({ args: ['--no-sandbox'] });
   const page = await browser.newPage();
   await page.setContent(html, { waitUntil: 'networkidle0' });
   await page.pdf({

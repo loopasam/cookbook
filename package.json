@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "vitest run",
-    "build": "node scripts/build-pdf.js && node scripts/build-site.js"
+    "build": "node scripts/build-pdf.js && node scripts/build-site.js",
+    "build:site": "node scripts/build-site.js"
   },
   "repository": {
     "type": "git",
