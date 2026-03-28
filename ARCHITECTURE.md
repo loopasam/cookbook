@@ -256,12 +256,10 @@ User opens Issue  →  Action triggers  →  Pi agent reads issue body
 - **Model**: Anthropic `claude-opus-4-6` via `ANTHROPIC_API_KEY` repo secret
 - **Agent prompt**: Inline in the workflow. Instructs pi to:
   1. Read the issue title and body
-  2. Determine if it's a recipe — if not, comment on the issue explaining why and stop
-  3. If it is a recipe, create the markdown file in `recipes/` following AGENTS.md format rules
-  4. Run `npm run build` to regenerate the PDF and site
-  5. Commit and push to `main`
-- **After agent completes**: A final step closes the issue with a comment linking to the new recipe on the site
-- **Non-recipe issues**: The agent comments that the issue doesn't look like a recipe and does NOT close the issue (leave it for a human)
+  2. Create the markdown file in `recipes/` following AGENTS.md format rules
+  3. Run `npm run build` to regenerate the PDF and site
+- **After agent completes**: A final step commits, pushes to `main`, and closes the issue with a comment linking to the new recipe on the site
+- **No guardrails**: Any issue is treated as a recipe submission — the agent always attempts to convert it
 
 ### Secrets Required
 

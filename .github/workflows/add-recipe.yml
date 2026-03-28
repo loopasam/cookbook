@@ -44,26 +44,19 @@ jobs:
           $ISSUE_BODY
 
           Your task:
-          1. Determine if this is a recipe submission. If it is NOT a recipe (e.g. a bug report, question, or unrelated content), create a file called /tmp/not-a-recipe containing the text of a polite comment explaining this doesn't appear to be a recipe. Then stop.
-          2. If it IS a recipe, follow the AGENTS.md conventions exactly to create a new markdown file in recipes/. Pick the right category, add emoji markers, keep it concise.
-          3. After creating the recipe file, run: npm run build
-          4. Verify the build succeeded."
+          1. Follow the AGENTS.md conventions exactly to create a new markdown file in recipes/ based on the issue content. Pick the right category, add emoji markers, keep it concise.
+          2. After creating the recipe file, run: npm run build
+          3. Verify the build succeeded."
 
       - name: Check if recipe was created
         id: check
         run: |
-          if [ -f /tmp/not-a-recipe ]; then
-            echo "is_recipe=false" >> "$GITHUB_OUTPUT"
-          elif git diff --name-only | grep -q "^recipes/"; then
-            echo "is_recipe=true" >> "$GITHUB_OUTPUT"
+          if git diff --name-only | grep -q "^recipes/"; then
             echo "recipe_file=$(git diff --name-only | grep '^recipes/' | head -1)" >> "$GITHUB_OUTPUT"
-          else
-            echo "is_recipe=false" >> "$GITHUB_OUTPUT"
-            echo "No recipe file created and no not-a-recipe marker" > /tmp/not-a-recipe
           fi
 
       - name: Commit and push recipe
-        if: steps.check.outputs.is_recipe == 'true'
+        if: steps.check.outputs.recipe_file
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -72,7 +65,7 @@ jobs:
           git push
 
       - name: Close issue with success comment
-        if: steps.check.outputs.is_recipe == 'true'
+        if: steps.check.outputs.recipe_file
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -80,15 +73,3 @@ jobs:
           gh issue comment ${{ github.event.issue.number }} \
             --body "✅ Recipe added! It will be live shortly at https://loopasam.github.io/cookbook/${SLUG}.html"
           gh issue close ${{ github.event.issue.number }}
-
-      - name: Comment on non-recipe issue
-        if: steps.check.outputs.is_recipe == 'false'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          if [ -f /tmp/not-a-recipe ]; then
-            COMMENT=$(cat /tmp/not-a-recipe)
-          else
-            COMMENT="This doesn't appear to be a recipe submission. If it is, please reopen with the recipe details in the issue body."
-          fi
-          gh issue comment ${{ github.event.issue.number }} --body "$COMMENT"
