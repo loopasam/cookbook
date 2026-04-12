@@ -10,16 +10,13 @@ servings: 4
 - 🥥 1 can coconut cream
 - 🧅 1 onion, diced
 - 🧄 4 cloves garlic, minced
-- 🫚 2 tbsp garam masala
-- 🫚 1 tbsp cumin
-- 🫚 1 tsp turmeric
-- 🌶️ 1 tsp chili powder
+- 🫚 2 tbsp garam masala, 1 tbsp cumin, 1 tsp turmeric, 1 tsp chili powder
 - 🥣 200ml chicken broth
 - 🍚 Rice to serve
 
 ## Steps
-1. Sauté the onion 🧅 in the Instant Pot on Sauté mode
-2. Add the garlic 🧄 and all spices 🫚🌶️, stir 1 min
+1. Sauté the onion 🧅 in the Instant Pot on Sauté mode, 2-3 min until translucent
+2. Add the garlic 🧄 and all spices 🫚, stir 1 min
 3. Add the chicken 🍗, tomatoes 🍅, and broth 🥣 — mix everything together
 4. Seal the IP, pressure cook 9 min
 5. Quick release → stir in the coconut cream 🥥
