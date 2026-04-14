@@ -6,7 +6,7 @@ servings: 4
 
 ## Ingredients
 - 🌾 300g arborio rice
-- �绿 500g asparagus, cut into 2cm pieces
+- 🥬 500g asparagus, cut into 2cm pieces
 - 🧅 1 shallot, finely diced
 - 🧄 2 cloves garlic, minced
 - 🍷 150ml white wine
@@ -21,7 +21,7 @@ servings: 4
 2. Cook shallot 🧅 2-3 min until soft, add garlic 🧄 30 sec
 3. Add rice 🌾, stir 1-2 min until edges are translucent
 4. Pour in wine 🍷, stir until absorbed
-5. Add stock 🥣 and asparagus �绿 — mix well
+5. Add stock 🥣 and asparagus 🥬 — mix well
 6. Seal, cook on High Pressure 6 min, quick release
 7. Stir in parmesan 🧀 and butter 🧈, rest 2 min, season
 
