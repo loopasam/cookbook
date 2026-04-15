@@ -15,7 +15,7 @@ servings: 4
 
 ## Steps
 1. Dry the beans very well — critical for blistering
-2. Set Instant Pot to Sauté (or heat a wok/pan over high heat), add oil 🫒
+2. Heat a wok or large frying pan over high heat, add oil 🫒
 3. Add beans 🫘, cook 8–10 min, turning often, until blistered and charred in spots
 4. Push beans aside, add garlic 🧄 + ginger 🫚, fry 30 sec
 5. Return beans to the pan
