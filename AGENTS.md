@@ -84,6 +84,18 @@ If the same prep is used in multiple recipes, duplicate it in each file — ever
 - **Keep it concise**: recipes are printed 4-per-A4-page, so brevity matters. Aim for 5–8 ingredients and 4–6 steps.
 - After adding recipes, run `npm run build` to regenerate the PDF.
 
+## Sharing Recipes
+
+When sharing a recipe URL with the user, always link to the **individual recipe page**, not the cookbook root.
+
+**Pattern:** `https://loopasam.github.io/cookbook/<kebab-case-recipe-name>.html`
+
+**Example:**
+- Recipe file: `recipes/shaved-asparagus-pizza.md`
+- Live URL: `https://loopasam.github.io/cookbook/shaved-asparagus-pizza.html`
+
+Derive the slug from the recipe filename (kebab-case, no `.md` extension).
+
 ## Learnings
 
 _Capture gotchas, decisions, and things discovered during implementation here so they aren't lost._
