@@ -5,13 +5,13 @@ servings: 1 pizza (12")
 ---
 
 ## Ingredients
-- 🟢 225g asparagus
+- 🟢 500g asparagus
 - 🧀 ¼ cup grated Parmesan
 - 🧀 225g mozzarella, shredded or cubed
 - 🫒 2 tsp olive oil
 - 🧂 ½ tsp coarse salt
 - ⬛ Black pepper
-- 🌿 1 scallion, thinly sliced
+- 🌿 2 scallions, thinly sliced
 - 🍕 1 premade pizza dough (thin, 12")
 
 ## Steps
