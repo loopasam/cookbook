@@ -10,7 +10,7 @@ servings: 4
 - 🫒 2 tbsp olive oil
 - 🍋 2 tbsp lime juice
 - 🧅 1 onion, sliced (optional)
-- 💧 ¼ cup water
+- 💧 ¼ cup water or broth
 
 ## Steps
 1. Rub chicken thighs 🍗 with spice mix 🌶️
@@ -21,6 +21,9 @@ servings: 4
 6. Add water 💧, return chicken to pot
 7. Seal, cook on High Pressure 10 min, natural release 10 min
 8. Rest 2 min, slice or serve whole
+
+## Lazy Mode
+Skip the sear — just rub the chicken with spices and place it in the pot with ¼ cup broth. HP 10 min, natural release 10 min. Done.
 
 ## Notes
 - Don't add extra salt — the spice mix is already salted
