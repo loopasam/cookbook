@@ -14,7 +14,7 @@ servings: 4
 - 🧀 50g parmesan, grated
 - 🧈 20g butter
 - 🫒 1 tbsp olive oil
-- Salt & pepper
+- 🧂 Salt & pepper
 
 ## Steps
 1. Set Instant Pot to Sauté, heat olive oil 🫒
