@@ -4,7 +4,7 @@ A personal recipe collection with an automated PDF generator and GitHub Pages si
 
 ## What's here
 
-- **26 recipes** across categories: starters, mains, sides, dressings, soups, desserts
+- **27 recipes** across categories: starters, mains, sides, dressings, soups, desserts
 - **PDF output** — `cookbook.pdf` generated from markdown via Puppeteer (A4, 2×2 card grid with cut lines)
 - **GitHub Pages site** — live at [loopasam.github.io/cookbook](https://loopasam.github.io/cookbook)
 - **Automated deploy** — push to `main` → PDF + site rebuild automatically
