@@ -27,6 +27,8 @@ jobs:
           node-version: 20
           cache: npm
 
+      - run: sudo apt-get update && sudo apt-get install -y libnss3 libnspr4 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 libxrandr2 libgbm1 libpango-1.0-0 libcairo2 libasound2 libatspi2.0-0
+
       - run: npm ci
 
       - run: npm run build
